@@ -3,33 +3,52 @@ package androidmydream.myfirstgame;
         import android.graphics.Bitmap;
         import android.graphics.Canvas;
         import android.graphics.Matrix;
+        import android.graphics.Rect;
 
         import java.util.Random;
 
 public class Player extends GameObject{
     private Bitmap top,left,bottom,right;
     private int score;
+    private int x;
+
+    @Override
+    public int getX() {
+        return x;
+    }
+
+    @Override
+    public int getY() {
+        return y;
+    }
+
+    private int y;
 
     private static final int SPEED = 5;
     private boolean playing;
     private long startTime;
 
-    private int HEIGHT;
-    private int WIDTH;
+    public int HEIGHT;
+    public int WIDTH;
 
     private Bitmap imageFinal;
+
+    public int getDirection() {
+        return direction;
+    }
+
     private int direction;
 
     //public Player(Bitmap res, int w, int h, int numFrames) {
     public Player(Bitmap top,Bitmap left,Bitmap bottom,Bitmap right, int w, int h, int numFrames) {
-        x = GamePanel.WIDTH/2;
-        y = GamePanel.HEIGHT/2;
+        this.x = GamePanel.WIDTH/2;
+        this.y = GamePanel.HEIGHT/2;
         dy = 0;
         dx = 0;
         score = 0;
         this.HEIGHT = h;
         this.WIDTH = w;
-
+        this.direction=0;
         this.top=getResizedBitmap(top,h,w);
         this.left=getResizedBitmap(left,w,h);
         this.bottom=getResizedBitmap(bottom,h,w);
@@ -99,17 +118,17 @@ public class Player extends GameObject{
             startTime = System.nanoTime();
         }
         if(x > (GamePanel.WIDTH-this.WIDTH))
-            x=GamePanel.WIDTH-this.WIDTH;
+            this.x=GamePanel.WIDTH-this.WIDTH;
         else if(y>(GamePanel.HEIGHT-this.HEIGHT))
-            y=GamePanel.HEIGHT-this.HEIGHT;
+            this.y=GamePanel.HEIGHT-this.HEIGHT;
         else if(x<0)
-            x=0;
+            this.x=0;
         else if(y<0)
-            y=0;
+            this.y=0;
         else
         {
-            x+=dx;
-            y+=dy;
+            this.x+=dx;
+            this.y+=dy;
         }
         System.out.println("UPDATED: LOCATION - "+x+" : "+y);
     }
@@ -140,14 +159,18 @@ public class Player extends GameObject{
             imageFinal=null;
 
         if(imageFinal!= null) {
-            canvas.drawBitmap(imageFinal, x, y, null);
+            canvas.drawBitmap(imageFinal, this.x, this.y, null);
         }
         else
         {
-            canvas.drawBitmap(top, x, y, null);
+            canvas.drawBitmap(top, this.x, this.y, null);
         }
 
         System.out.println("LOCATION:"+x+"::"+y);
+    }
+    public Rect getRect()
+    {
+        return new Rect(this.getX(), this.getY(),this.WIDTH,this.HEIGHT);
     }
     public int getScore(){return score;}
     public boolean getPlaying(){return playing;}

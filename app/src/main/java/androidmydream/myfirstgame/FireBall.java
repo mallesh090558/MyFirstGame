@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Point;
+import android.graphics.Rect;
 import android.media.Image;
 
 /**
@@ -14,7 +15,7 @@ public class FireBall extends GameObject
     public int HEIGHT, WIDTH;
     public int x,y;
 
-    private static final int MOVESPEED = 5;
+    private static final int MOVESPEED = 9;
 
     // compass direction/bearing constants
     private static final int NUM_DIRS = 8;
@@ -73,5 +74,9 @@ public class FireBall extends GameObject
     {
         System.out.println("REACHED ENEMY FIREBALL DRAW");
         canvas.drawBitmap(enemyball,x,y,null);
+    }
+    public Rect getRect()
+    {
+        return new Rect(this.x, this.y,this.WIDTH,this.HEIGHT);
     }
 }

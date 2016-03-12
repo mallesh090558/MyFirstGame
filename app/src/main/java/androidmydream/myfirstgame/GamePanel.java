@@ -20,6 +20,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
     private Background bg;
     private DirectionPanel dp;
     private Player player;
+    private BulletFired bullet_fired;
     private EnemyGroup enemygroup;
 
     public static final int UP=11;
@@ -27,7 +28,10 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
     public static final int DOWN=33;
     public static final int LEFT=44;
 
+    private Bitmap bullet_top,bullet_bottom,bullet_right,bullet_left;
     private long endinProcessCountTime;
+
+    public static boolean isGameOver=false;
 
     public GamePanel(Context context)
     {
@@ -82,9 +86,16 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
         player = new Player(tank_top,tank_left,tank_bottom,tank_right, 75, 35, 1);
         dp=new DirectionPanel();
 
+        bullet_top = BitmapFactory.decodeResource(getResources(),R.drawable.fire_bullet);
+        bullet_bottom = BitmapFactory.decodeResource(getResources(),R.drawable.fire_bullet);
+        bullet_right = BitmapFactory.decodeResource(getResources(),R.drawable.fire_bullet);
+        bullet_left = BitmapFactory.decodeResource(getResources(),R.drawable.fire_bullet);
+
+        bullet_fired = new BulletFired(bullet_top, bullet_bottom, bullet_right, bullet_left, 25, 25, player);
+
         endinProcessCountTime = 0;
 
-        enemygroup = new EnemyGroup(BitmapFactory.decodeResource(getResources(), R.drawable.fireball));
+        enemygroup = new EnemyGroup(BitmapFactory.decodeResource(getResources(), R.drawable.fireball), bullet_fired, player);
         enemygroup.addEnemy();
 
         //we can safely start the game loop
@@ -112,6 +123,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
             else
             {
                 player.setUp(direction);
+                bullet_fired.setUp(direction);
             }
             return true;
         }
@@ -149,6 +161,10 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
 
             bg.update();
             player.update();
+            bullet_fired.update();
+
+            if(bullet_fired==null)
+                bullet_fired = new BulletFired(bullet_top, bullet_bottom, bullet_right, bullet_left, 25, 25, player);
         }
     }
     @Override
@@ -164,7 +180,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
             bg.draw(canvas);
             System.out.println("REACHED");
             player.draw(canvas);
-
+            bullet_fired.draw(canvas);
 
             if(endinProcessCountTime==0)
             {

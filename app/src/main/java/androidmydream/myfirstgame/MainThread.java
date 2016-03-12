@@ -37,8 +37,14 @@ public class MainThread extends Thread
             try {
                 synchronized (surfaceHolder) {
                     canvas = this.surfaceHolder.lockCanvas();
-                    this.gamePanel.update();
-                    this.gamePanel.draw(canvas);
+                    if(!gamePanel.isGameOver) {
+                        this.gamePanel.update();
+                        this.gamePanel.draw(canvas);
+                    }
+                    else
+                    {
+                        this.setRunning(false);
+                    }
                     /*************************************************************
                      * THING TO DO :
                      * CREATE ENEMY OBJECT HERE WITH A SPECIFIED TIME GAP

@@ -2,7 +2,10 @@ package androidmydream.myfirstgame;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.Rect;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -16,10 +19,17 @@ public class EnemyGroup
 
     private int direction;
     private Bitmap img;
-    EnemyGroup(Bitmap img)
+
+    private BulletFired bulletFired;
+    private Player player;
+
+    EnemyGroup(Bitmap img, BulletFired bulletFired, Player player)
     {
         obj = new ArrayList<FireBall>();
         this.img=img;
+
+        this.bulletFired=bulletFired;
+        this.player=player;
     }
 
     public void addEnemy()
@@ -84,8 +94,10 @@ public class EnemyGroup
                     System.out.println("DIRECTION OF ENEMY 5 REACHED RECTANGLE R AT "+j+" WITH "+r1.centerX()+":"+r1.centerY()+":"+r1.width()+":"+r1.height()+" ALONG "+Rect.intersects(r1, r2));
                     System.out.println("DIRECTION OF ENEMY 5 REACHED RECTANGLE D AT "+j+" WITH "+other.x+":"+f.x+":"+other.y+":"+f.y+" ALONG "+r1.intersect(r2));
                     */
-                    if(i!=j) {
-                        if (rectangle_collision(f.x, f.y, f.WIDTH, f.HEIGHT, other.x, other.y, other.WIDTH, other.HEIGHT)) {
+                    if(i!=j)
+                    {
+                        if (rectangle_collision(f.x, f.y, f.WIDTH, f.HEIGHT, other.x, other.y, other.WIDTH, other.HEIGHT))
+                        {
                             int[] num = {0, 1, 2, 3, 4, 5, 6, 7};
                             direction = getRandomDirection(num);
 
@@ -131,6 +143,37 @@ public class EnemyGroup
             System.out.println("OBJECT IMAGE DRAWN SUCCESSFULLY");
             collisionCheck(i);
 
+            Paint mypaint= new Paint();
+            System.out.println("COLLISION : STATUS in ENEMY GROUP - " + Rect.intersects(f.getRect(), bulletFired.getRect()) + "  & " + Rect.intersects(bulletFired.getRect(), f.getRect()));
+
+            mypaint.setColor(Color.RED);
+            canvas.drawRect(f.getRect(), mypaint);
+
+            mypaint.setColor(Color.YELLOW);
+            canvas.drawRect(bulletFired.getRect(), mypaint);
+
+            mypaint.setColor(Color.BLUE);
+            canvas.drawRect(player.getRect(), mypaint);
+            if(Rect.intersects(f.getRect(), bulletFired.getRect()))
+            {
+                obj.remove(i);
+            }
+            if(Rect.intersects(f.getRect(), player.getRect()))
+            {
+                GamePanel.isGameOver=true;
+            }
+
+            /*
+            if(rectangle_collision(bulletFired.getX(),bulletFired.getY(),bulletFired.getWIDTH(),bulletFired.getHEIGHT(),f.x,f.y,f.WIDTH,f.HEIGHT))
+            {
+                obj.remove(i);
+            }
+            if(rectangle_collision(player.getX(),player.getY(),player.WIDTH,player.HEIGHT,f.x,f.y,f.WIDTH,f.HEIGHT))
+            {
+                System.out.println("GAME OVER");
+
+            }
+            */
         }
     }
     public int getRandomDirection(int[] num)
