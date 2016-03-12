@@ -170,7 +170,7 @@ public class Player extends GameObject{
     }
     public Rect getRect()
     {
-        return new Rect(this.getX(), this.getY(),this.WIDTH,this.HEIGHT);
+        return new Rect(this.getX(), this.getY(),this.getX()+imageFinal.getWidth(),this.getY()+imageFinal.getHeight());
     }
     public int getScore(){return score;}
     public boolean getPlaying(){return playing;}

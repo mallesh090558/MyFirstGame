@@ -153,7 +153,10 @@ public class EnemyGroup
             canvas.drawRect(bulletFired.getRect(), mypaint);
 
             mypaint.setColor(Color.BLUE);
+            System.out.println("COLLISION PLAYER VALUES :" + player.getX() + " & " + player.getY() + " :: " + player.WIDTH + " & " + player.HEIGHT);
+
             canvas.drawRect(player.getRect(), mypaint);
+
             if(Rect.intersects(f.getRect(), bulletFired.getRect()))
             {
                 obj.remove(i);

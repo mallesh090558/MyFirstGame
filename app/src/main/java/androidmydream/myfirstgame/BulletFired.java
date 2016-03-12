@@ -129,7 +129,7 @@ public class BulletFired extends GameObject{
     }
     public Rect getRect()
     {
-        return new Rect(this.x, this.y,this.WIDTH,this.HEIGHT);
+        return new Rect(this.x, this.y,this.x+imageFinal.getWidth(),this.y+imageFinal.getHeight());
     }
     public void draw(Canvas canvas) {
         System.out.println("REACHED BULLET DRAW");

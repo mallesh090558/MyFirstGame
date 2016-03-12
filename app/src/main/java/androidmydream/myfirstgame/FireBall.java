@@ -65,8 +65,8 @@ public class FireBall extends GameObject
     {
         System.out.println("REACHED ENEMY UPDATE with "+direction);
         Point incr = incrs[direction];
-        x += (incr.x * (MOVESPEED));
-        y += (incr.y * (MOVESPEED));
+        this.x += (incr.x * (MOVESPEED));
+        this.y += (incr.y * (MOVESPEED));
 
         this.direction = direction;
     }
@@ -77,6 +77,7 @@ public class FireBall extends GameObject
     }
     public Rect getRect()
     {
-        return new Rect(this.x, this.y,this.WIDTH,this.HEIGHT);
+        //return new Rect(this.x, this.y,this.WIDTH,this.HEIGHT);
+        return new Rect(this.x , this.y ,this.x+enemyball.getWidth(),this.y+enemyball.getHeight());
     }
 }
