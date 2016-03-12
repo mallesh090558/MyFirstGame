@@ -143,6 +143,7 @@ public class EnemyGroup
             System.out.println("OBJECT IMAGE DRAWN SUCCESSFULLY");
             collisionCheck(i);
 
+            /*
             Paint mypaint= new Paint();
             System.out.println("COLLISION : STATUS in ENEMY GROUP - " + Rect.intersects(f.getRect(), bulletFired.getRect()) + "  & " + Rect.intersects(bulletFired.getRect(), f.getRect()));
 
@@ -156,7 +157,7 @@ public class EnemyGroup
             System.out.println("COLLISION PLAYER VALUES :" + player.getX() + " & " + player.getY() + " :: " + player.WIDTH + " & " + player.HEIGHT);
 
             canvas.drawRect(player.getRect(), mypaint);
-
+            */
             if(Rect.intersects(f.getRect(), bulletFired.getRect()))
             {
                 obj.remove(i);
