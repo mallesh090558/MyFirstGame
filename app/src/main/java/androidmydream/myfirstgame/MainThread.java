@@ -9,7 +9,7 @@ public class MainThread extends Thread
     private double averageFPS;
     private SurfaceHolder surfaceHolder;
     private GamePanel gamePanel;
-    private boolean running;
+    private boolean running, paused;
     public static Canvas canvas;
 
     public MainThread(SurfaceHolder surfaceHolder, GamePanel gamePanel)
@@ -29,31 +29,28 @@ public class MainThread extends Thread
         int frameCount =0;
         long targetTime = 1000/FPS;
 
-        while(running) {
-            startTime = System.nanoTime();
-            canvas = null;
+        while(running)
+        {
+            while(paused)
+            {
+                startTime = System.nanoTime();
+                canvas = null;
 
-            //try locking the canvas for pixel editing
-            try {
+                try {
                 synchronized (surfaceHolder) {
                     canvas = this.surfaceHolder.lockCanvas();
-                    if(!gamePanel.isGameOver) {
+                    if(!gamePanel.isGameOver && !gamePanel.ispaused) {
                         this.gamePanel.update();
                         this.gamePanel.draw(canvas);
                     }
                     else
                     {
+                        if(gamePanel.isGameOver)
                         this.setRunning(false);
+                        else
+                            this.pause();
                     }
-                    /*************************************************************
-                     * THING TO DO :
-                     * CREATE ENEMY OBJECT HERE WITH A SPECIFIED TIME GAP
-                     * ENEMY MUST CREATE AFTER EVERY 15 SECONDS
-                     * CHECK HOW TO USE SYSTEM TIME VALUE
-                     * CALL ENEMY DRAW and UPDATE in GamePanel
-                     **************************************************************/
-                    //if(System.nanoTime()-startTime)
-                }
+                   }
             } catch (Exception e) {
             }
             finally{
@@ -83,9 +80,21 @@ public class MainThread extends Thread
                 System.out.println(averageFPS);
             }
         }
+            if(gamePanel.ispaused==true)
+                this.pause();
+            else
+                this.unpause();
+        }
     }
     public void setRunning(boolean b)
     {
         running=b;
+    }
+    public void pause() {
+        paused = true;
+    }
+
+    public void unpause() {
+        paused = false;
     }
 }

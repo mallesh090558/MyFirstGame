@@ -1,6 +1,7 @@
 package androidmydream.myfirstgame;
 
         import android.graphics.Bitmap;
+        import android.graphics.BitmapFactory;
         import android.graphics.Canvas;
         import android.graphics.Color;
         import android.graphics.Matrix;
@@ -9,13 +10,16 @@ package androidmydream.myfirstgame;
 
 public class Background {
 
-    private Bitmap image;
+    private Bitmap image,pause,play;
     private int x, y, dx;
 
-    public Background(Bitmap res)
+    public Background(Bitmap res, Bitmap play, Bitmap pause)
     {
         image = getResizedBitmap(res,GamePanel.WIDTH,GamePanel.HEIGHT);
         dx=GamePanel.MOVESPEED;
+
+        this.play=getResizedBitmap(play,150,150);
+        this.pause=getResizedBitmap(pause,150,150);
 
     }
     public Bitmap getResizedBitmap(Bitmap bm, int newWidth, int newHeight) {
@@ -29,8 +33,7 @@ public class Background {
         matrix.postScale(scaleWidth, scaleHeight);
 
         // "RECREATE" THE NEW BITMAP
-        Bitmap resizedBitmap = Bitmap.createBitmap(
-                bm, 0, 0, width, height, matrix, false);
+        Bitmap resizedBitmap = Bitmap.createBitmap(bm, 0, 0, width, height, matrix, false);
         bm.recycle();
         return resizedBitmap;
     }
@@ -54,12 +57,18 @@ public class Background {
         canvas.drawRect(GamePanel.WIDTH / 4, GamePanel.HEIGHT-GamePanel.HEIGHT/16, (GamePanel.WIDTH / 4) + ((GamePanel.WIDTH / 16) * (2 ^ (1 / 2))), (GamePanel.HEIGHT-GamePanel.HEIGHT/16) + ((GamePanel.WIDTH / 16) * (2 ^ (1 / 2))), paint);
         //canvas.drawCircle(GamePanel.WIDTH/4,GamePanel.HEIGHT-GamePanel.HEIGHT/16,GamePanel.WIDTH/16,paint);
         //paint.setColor(Color.RED);
-        canvas.drawRect(GamePanel.WIDTH / 16, GamePanel.HEIGHT-(5*GamePanel.HEIGHT)/32, (GamePanel.WIDTH / 16) + ((GamePanel.WIDTH / 16) * (2 ^ (1 / 2))), (GamePanel.HEIGHT-(5*GamePanel.HEIGHT)/32) + ((GamePanel.WIDTH / 16) * (2 ^ (1 / 2))), paint);
+        canvas.drawRect(GamePanel.WIDTH / 16, GamePanel.HEIGHT - (5 * GamePanel.HEIGHT) / 32, (GamePanel.WIDTH / 16) + ((GamePanel.WIDTH / 16) * (2 ^ (1 / 2))), (GamePanel.HEIGHT - (5 * GamePanel.HEIGHT) / 32) + ((GamePanel.WIDTH / 16) * (2 ^ (1 / 2))), paint);
         //canvas.drawCircle(GamePanel.WIDTH/16,GamePanel.HEIGHT-(5*GamePanel.HEIGHT)/32,GamePanel.WIDTH/16,paint);
         //paint.setColor(Color.BLUE);
-        canvas.drawRect((7*GamePanel.WIDTH)/16, GamePanel.HEIGHT - (5 * GamePanel.HEIGHT) / 32,(7*GamePanel.WIDTH)/16 + ((GamePanel.WIDTH / 16) * (2 ^ (1 / 2))), (GamePanel.HEIGHT - (5 * GamePanel.HEIGHT) / 32) + ((GamePanel.WIDTH / 16) * (2 ^ (1 / 2))), paint);
+        canvas.drawRect((7 * GamePanel.WIDTH) / 16, GamePanel.HEIGHT - (5 * GamePanel.HEIGHT) / 32, (7 * GamePanel.WIDTH) / 16 + ((GamePanel.WIDTH / 16) * (2 ^ (1 / 2))), (GamePanel.HEIGHT - (5 * GamePanel.HEIGHT) / 32) + ((GamePanel.WIDTH / 16) * (2 ^ (1 / 2))), paint);
         //canvas.drawCircle((7*GamePanel.WIDTH)/16,GamePanel.HEIGHT-(5*GamePanel.HEIGHT)/32,GamePanel.WIDTH/16,paint);
         System.out.println("REACHED BG");
 
+        Bitmap imageicon= pause;
+        if(GamePanel.ispaused==true)
+        {
+            imageicon=play;
+        }
+        canvas.drawBitmap(imageicon,GamePanel.WIDTH/4,GamePanel.HEIGHT/4,paint);
     }
 }

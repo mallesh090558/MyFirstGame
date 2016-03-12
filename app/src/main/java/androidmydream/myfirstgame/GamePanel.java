@@ -32,6 +32,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
     private long endinProcessCountTime;
 
     public static boolean isGameOver=false;
+    public static boolean ispaused=false;
 
     public GamePanel(Context context)
     {
@@ -75,7 +76,10 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
     @Override
     public void surfaceCreated(SurfaceHolder holder){
 
-        bg = new Background(BitmapFactory.decodeResource(getResources(), R.drawable.ground));
+        Bitmap play = BitmapFactory.decodeResource(getResources(),R.drawable.play);
+        Bitmap pause = BitmapFactory.decodeResource(getResources(),R.drawable.paused);
+
+        bg = new Background(BitmapFactory.decodeResource(getResources(), R.drawable.ground),play,pause);
         Bitmap tank_top = BitmapFactory.decodeResource(getResources(),R.drawable.tank_top);
         Bitmap tank_bottom = BitmapFactory.decodeResource(getResources(),R.drawable.tank_bottom);
         Bitmap tank_right = BitmapFactory.decodeResource(getResources(),R.drawable.tank_right);
