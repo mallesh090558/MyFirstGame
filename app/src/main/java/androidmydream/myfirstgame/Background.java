@@ -62,6 +62,10 @@ public class Background {
             paint.setTypeface(bold);
             canvas.drawText("YOUR SCORE IS "+GamePanel.score,GamePanel.WIDTH/2,GamePanel.HEIGHT/2,paint);
         }
+        else if(GamePanel.isRestarted)
+        {
+            GamePanel.isGameOver=false;
+        }
         else
         {
             canvas.drawBitmap(image, 0, 0, null);

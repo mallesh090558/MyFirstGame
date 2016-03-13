@@ -26,6 +26,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
     private long endinProcessCountTime;
 
     public static boolean isGameOver=false;
+    public static boolean isRestarted=false;
     public static boolean ispaused=false;
     public static int score,level;
 
@@ -110,6 +111,11 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
     {
         System.out.println("IN TOUCH EVENT");
 
+        if(isGameOver)
+        {
+            isRestarted=true;
+            thread.setRunning(true);
+        }
         float locX = event.getX();
         float locY = event.getY();
 
@@ -209,10 +215,10 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
                 System.out.println("ENEMY TIME CREATION : " + endinProcessCountTime + " DIFFERENCE :" + System.currentTimeMillis() + " SCORE : " + GamePanel.score);
                 if (System.currentTimeMillis() > endinProcessCountTime) {
 
-                    if(GamePanel.score>level)
-                        level+=10;
+                    if (GamePanel.score > level)
+                        level += 10;
                     System.out.println("ENTERED to CREATE ENEMY");
-                    for(int i=0;i<(level/10);i++) {
+                    for (int i = 0; i < (level / 10); i++) {
                         enemygroup.addEnemy();
                     }
                     endinProcessCountTime = 0;

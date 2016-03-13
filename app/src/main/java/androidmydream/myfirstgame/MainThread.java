@@ -37,7 +37,9 @@ public class MainThread extends Thread
                 try {
                 synchronized (surfaceHolder) {
                     canvas = this.surfaceHolder.lockCanvas();
-                    if(!GamePanel.isGameOver && !paused) {
+
+                    if(!GamePanel.isGameOver && !paused)
+                    {
                         this.gamePanel.update();
                         this.gamePanel.draw(canvas);
                     }

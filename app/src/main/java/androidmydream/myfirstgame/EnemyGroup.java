@@ -136,6 +136,11 @@ public class EnemyGroup
     public void EnemyDraw(Canvas canvas)
     {
         System.out.println("REACHED ENEMY DRAW ");
+
+        if(GamePanel.isRestarted)
+        {
+            obj.clear();
+        }
         for (int i=0;i< obj.size();i++)
         {
             FireBall f = obj.get(i);
