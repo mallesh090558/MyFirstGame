@@ -14,8 +14,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
     public static int WIDTH;
     public static int HEIGHT;
     public static final int MOVESPEED = 0;
-    public static final int ENEMYGENSPEED = 15;
-    private long smokeStartTime;
+    public static final int ENEMYGENSPEED = 5;
     private MainThread thread;
     private Background bg;
     private DirectionPanel dp;
@@ -23,27 +22,24 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
     private BulletFired bullet_fired;
     private EnemyGroup enemygroup;
 
-    public static final int UP=11;
-    public static final int RIGHT=22;
-    public static final int DOWN=33;
-    public static final int LEFT=44;
-
     private Bitmap bullet_top,bullet_bottom,bullet_right,bullet_left;
     private long endinProcessCountTime;
 
     public static boolean isGameOver=false;
     public static boolean ispaused=false;
+    public static int score,level;
 
     public GamePanel(Context context)
     {
         super(context);
+        GamePanel.score=0;
         DisplayMetrics dm = new DisplayMetrics();
         ((MainActivity)context).getWindowManager().getDefaultDisplay().getMetrics(dm);
 
-        this.WIDTH  = dm.widthPixels;
-        this.HEIGHT = dm.heightPixels;
+        WIDTH  = dm.widthPixels;
+        HEIGHT = dm.heightPixels;
 
-        System.out.println("PANEL WIDTH:"+this.WIDTH+"\tHEIGHT"+this.HEIGHT);
+        System.out.println("PANEL WIDTH:"+ WIDTH+"\tHEIGHT"+ HEIGHT);
 
         getHolder().addCallback(this);
 
@@ -78,8 +74,9 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
 
         Bitmap play = BitmapFactory.decodeResource(getResources(),R.drawable.play);
         Bitmap pause = BitmapFactory.decodeResource(getResources(),R.drawable.paused);
+        Bitmap gameover = BitmapFactory.decodeResource(getResources(),R.drawable.gameover);
 
-        bg = new Background(BitmapFactory.decodeResource(getResources(), R.drawable.ground),play,pause);
+        bg = new Background(BitmapFactory.decodeResource(getResources(), R.drawable.ground),play,pause,gameover);
         Bitmap tank_top = BitmapFactory.decodeResource(getResources(),R.drawable.tank_top);
         Bitmap tank_bottom = BitmapFactory.decodeResource(getResources(),R.drawable.tank_bottom);
         Bitmap tank_right = BitmapFactory.decodeResource(getResources(),R.drawable.tank_right);
@@ -98,8 +95,9 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
         bullet_fired = new BulletFired(bullet_top, bullet_bottom, bullet_right, bullet_left, 25, 25, player);
 
         endinProcessCountTime = 0;
+        level=10;
 
-        enemygroup = new EnemyGroup(BitmapFactory.decodeResource(getResources(), R.drawable.fireball), bullet_fired, player);
+        enemygroup = new EnemyGroup(BitmapFactory.decodeResource(getResources(), R.drawable.fire_bullet), bullet_fired, player);
         enemygroup.addEnemy();
 
         //we can safely start the game loop
@@ -123,6 +121,19 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
             if(!player.getPlaying())
             {
                 player.setPlaying(true);
+            }
+            else if(direction==55)
+            {
+                if(GamePanel.ispaused==false)
+                {
+                    GamePanel.ispaused = true;
+                    thread.pause();
+                }
+                else
+                {
+                    GamePanel.ispaused=false;
+                    thread.unpause();
+                }
             }
             else
             {
@@ -161,14 +172,17 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
 
     public void update()
     {
-        if(player.getPlaying()) {
+        if(!isGameOver)
+        {
+            if(player.getPlaying())
+            {
+                bg.update();
+                player.update();
+                bullet_fired.update();
 
-            bg.update();
-            player.update();
-            bullet_fired.update();
-
-            if(bullet_fired==null)
-                bullet_fired = new BulletFired(bullet_top, bullet_bottom, bullet_right, bullet_left, 25, 25, player);
+                if(bullet_fired==null)
+                bullet_fired = new BulletFired(bullet_top, bullet_bottom, bullet_right, bullet_left, GamePanel.WIDTH/10, GamePanel.WIDTH/10, player);
+            }
         }
     }
     @Override
@@ -177,29 +191,36 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
         final float scaleFactorX = getWidth()/(WIDTH*1.f);
         final float scaleFactorY = getHeight()/(HEIGHT*1.f);
 
-        if(canvas!=null) {
+        if(canvas!=null)
+        {
             final int savedState = canvas.save();
 
             canvas.scale(scaleFactorX, scaleFactorY);
             bg.draw(canvas);
             System.out.println("REACHED");
-            player.draw(canvas);
-            bullet_fired.draw(canvas);
+            if(!isGameOver) {
+                player.draw(canvas);
+                bullet_fired.draw(canvas);
 
-            if(endinProcessCountTime==0)
-            {
-                endinProcessCountTime = (ENEMYGENSPEED*1000) + System.currentTimeMillis();
+                if (endinProcessCountTime == 0) {
+                    endinProcessCountTime = (ENEMYGENSPEED * 1000) + System.currentTimeMillis();
+                }
+
+                System.out.println("ENEMY TIME CREATION : " + endinProcessCountTime + " DIFFERENCE :" + System.currentTimeMillis() + " SCORE : " + GamePanel.score);
+                if (System.currentTimeMillis() > endinProcessCountTime) {
+
+                    if(GamePanel.score>level)
+                        level+=10;
+                    System.out.println("ENTERED to CREATE ENEMY");
+                    for(int i=0;i<(level/10);i++) {
+                        enemygroup.addEnemy();
+                    }
+                    endinProcessCountTime = 0;
+                }
+
+                enemygroup.EnemyDraw(canvas);
+                canvas.restoreToCount(savedState);
             }
-
-            System.out.println("ENEMY TIME CREATION : " + endinProcessCountTime + " DIFFERENCE :" + System.currentTimeMillis());
-            if( System.currentTimeMillis() > endinProcessCountTime )
-            {
-                enemygroup.addEnemy();
-                endinProcessCountTime=0;
-            }
-
-            enemygroup.EnemyDraw(canvas);
-            canvas.restoreToCount(savedState);
         }
     }
 

@@ -11,7 +11,7 @@ public class DirectionPanel
     private int upY, downY, rightY, leftY;
     private int radius;
 
-    Rect up,down,right,left;
+    Rect up,down,right,left,halt,start;
 
     DirectionPanel()
     {
@@ -29,6 +29,9 @@ public class DirectionPanel
         down = new Rect(downX,downY,(downX)+(radius*(2^(1/2))),(downY)+(radius*(2^(1/2))));
         right = new Rect(rightX,rightY,(rightX)+(radius*(2^(1/2))),(rightY)+(radius*(2^(1/2))));
         left = new Rect(leftX,leftY,(leftX)+(radius*(2^(1/2))),(leftY)+(radius*(2^(1/2))));
+
+        halt = new Rect(0,0,50,50);
+        start = new Rect((GamePanel.WIDTH/2)-(250/2),(GamePanel.HEIGHT/2)-(250/2),(GamePanel.WIDTH/2)-(250/2)+250,(GamePanel.HEIGHT/2)-(250/2)+250);
     }
 /*
     public int isPointInsideCircle(int x, int y)
@@ -62,6 +65,14 @@ public class DirectionPanel
             return 33;
         else if(left.contains(x,y))
             return 44;
+        else if(halt.contains(x,y))
+        {
+            return 55;
+        }
+        else if(start.contains(x,y))
+        {
+            return 66;
+        }
         else
         return 0;
     }

@@ -37,14 +37,14 @@ public class EnemyGroup
         System.out.println("REACHED ENEMY GROUP");
         FireBall f = new FireBall(img ,10,10,GamePanel.WIDTH/4, GamePanel.HEIGHT/4);
         obj.add(f);
+        System.out.println("ENEMY CREATED SUCCESSFULLY ! COUNT - "+obj.size());
     }
 
     public void collisionCheck(int i)
     {
-            FireBall f = (FireBall)obj.get(i);
+            FireBall f = obj.get(i);
             int h = f.HEIGHT;
             int w = f.WIDTH;
-
             int xloc = f.x;
             int yloc = f.y;
 
@@ -88,7 +88,7 @@ public class EnemyGroup
                 int noupdate=1;
                 for(int j=0;j<obj.size();j++)
                 {
-                    FireBall other=(FireBall)obj.get(j);
+                    FireBall other= obj.get(j);
                     /*Rect r1=new Rect(other.x,other.y,other.WIDTH,other.HEIGHT);
 
                     System.out.println("DIRECTION OF ENEMY 5 REACHED RECTANGLE R AT "+j+" WITH "+r1.centerX()+":"+r1.centerY()+":"+r1.width()+":"+r1.height()+" ALONG "+Rect.intersects(r1, r2));
@@ -138,7 +138,7 @@ public class EnemyGroup
         System.out.println("REACHED ENEMY DRAW ");
         for (int i=0;i< obj.size();i++)
         {
-            FireBall f = (FireBall)obj.get(i);
+            FireBall f = obj.get(i);
             f.draw(canvas);
             System.out.println("OBJECT IMAGE DRAWN SUCCESSFULLY");
             collisionCheck(i);
@@ -161,6 +161,7 @@ public class EnemyGroup
             if(Rect.intersects(f.getRect(), bulletFired.getRect()))
             {
                 obj.remove(i);
+                GamePanel.score++;
             }
             if(Rect.intersects(f.getRect(), player.getRect()))
             {

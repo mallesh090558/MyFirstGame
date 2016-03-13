@@ -3,6 +3,7 @@ package androidmydream.myfirstgame;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.media.Image;
@@ -15,7 +16,7 @@ public class FireBall extends GameObject
     public int HEIGHT, WIDTH;
     public int x,y;
 
-    private static final int MOVESPEED = 9;
+    private static final int MOVESPEED = 10;
 
     // compass direction/bearing constants
     private static final int NUM_DIRS = 8;
@@ -44,6 +45,7 @@ public class FireBall extends GameObject
         this.y=yloc;
 
         this.enemyball=img;
+        System.out.println("RECREATE THE NEW ENEMY");
 
         this.direction = (int)( Math.random()*8 );
 
@@ -58,6 +60,7 @@ public class FireBall extends GameObject
         incrs[W] = new Point(1, 0);
         incrs[NW] = new Point(1, -1);
 
+        System.out.println("FIRE BALL CONSTRUCTED SUCCESSFULLY");
         //Check wether we use Point2D or Simple point for this above
 				/*Point2D provides best location capability */
     }

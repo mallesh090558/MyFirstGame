@@ -130,7 +130,7 @@ public class Player extends GameObject{
             this.x+=dx;
             this.y+=dy;
         }
-        System.out.println("UPDATED: LOCATION - "+x+" : "+y);
+        System.out.println("UPDATED: LOCATION - " + x + " : " + y);
     }
 
     public void draw(Canvas canvas)
@@ -165,16 +165,15 @@ public class Player extends GameObject{
         {
             canvas.drawBitmap(top, this.x, this.y, null);
         }
-
+        this.HEIGHT=imageFinal.getHeight();
+        this.WIDTH=imageFinal.getWidth();
         System.out.println("LOCATION:"+x+"::"+y);
     }
     public Rect getRect()
     {
         return new Rect(this.getX(), this.getY(),this.getX()+imageFinal.getWidth(),this.getY()+imageFinal.getHeight());
     }
-    public int getScore(){return score;}
     public boolean getPlaying(){return playing;}
     public void setPlaying(boolean b){playing = b;}
-    public void resetDY(){dy = 0;}
-    public void resetScore(){score = 0;}
+
 }

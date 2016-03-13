@@ -29,14 +29,6 @@ public class BulletFired extends GameObject{
         return x;
     }
 
-    public int getWIDTH() {
-        return WIDTH;
-    }
-
-    public int getHEIGHT() {
-        return HEIGHT;
-    }
-
     public int y;
 
     private Bitmap imageFinal;

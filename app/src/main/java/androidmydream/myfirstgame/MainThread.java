@@ -31,24 +31,22 @@ public class MainThread extends Thread
 
         while(running)
         {
-            while(paused)
-            {
                 startTime = System.nanoTime();
                 canvas = null;
 
                 try {
                 synchronized (surfaceHolder) {
                     canvas = this.surfaceHolder.lockCanvas();
-                    if(!gamePanel.isGameOver && !gamePanel.ispaused) {
+                    if(!GamePanel.isGameOver && !paused) {
                         this.gamePanel.update();
                         this.gamePanel.draw(canvas);
                     }
                     else
                     {
-                        if(gamePanel.isGameOver)
-                        this.setRunning(false);
-                        else
-                            this.pause();
+                        if(GamePanel.isGameOver)
+                        {
+                            this.gamePanel.draw(canvas);
+                        }
                     }
                    }
             } catch (Exception e) {
@@ -67,7 +65,7 @@ public class MainThread extends Thread
             waitTime = targetTime-timeMillis;
 
             try{
-                this.sleep(waitTime);
+                sleep(waitTime);
             }catch(Exception e){}
 
             totalTime += System.nanoTime()-startTime;
@@ -80,11 +78,7 @@ public class MainThread extends Thread
                 System.out.println(averageFPS);
             }
         }
-            if(gamePanel.ispaused==true)
-                this.pause();
-            else
-                this.unpause();
-        }
+
     }
     public void setRunning(boolean b)
     {

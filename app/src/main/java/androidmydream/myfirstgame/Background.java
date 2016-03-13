@@ -7,20 +7,21 @@ package androidmydream.myfirstgame;
         import android.graphics.Matrix;
         import android.graphics.Paint;
         import android.graphics.Rect;
+        import android.graphics.Typeface;
 
 public class Background {
 
-    private Bitmap image,pause,play;
+    private Bitmap image,pause,play,gameover;
     private int x, y, dx;
 
-    public Background(Bitmap res, Bitmap play, Bitmap pause)
+    public Background(Bitmap res, Bitmap play, Bitmap pause, Bitmap gameover)
     {
         image = getResizedBitmap(res,GamePanel.WIDTH,GamePanel.HEIGHT);
         dx=GamePanel.MOVESPEED;
 
-        this.play=getResizedBitmap(play,150,150);
-        this.pause=getResizedBitmap(pause,150,150);
-
+        this.play=getResizedBitmap(play,250,250);
+        this.pause=getResizedBitmap(pause,50,50);
+        this.gameover=getResizedBitmap(gameover,GamePanel.WIDTH,gameover.getHeight());
     }
     public Bitmap getResizedBitmap(Bitmap bm, int newWidth, int newHeight) {
         int width = bm.getWidth();
@@ -46,29 +47,48 @@ public class Background {
     }
     public void draw(Canvas canvas)
     {
-
-        canvas.drawBitmap(image, 0, 0, null);
         Paint paint = new Paint();
-        paint.setStyle(Paint.Style.FILL);
-        paint.setColor(Color.WHITE);
-        canvas.drawRect(GamePanel.WIDTH / 4, GamePanel.HEIGHT - GamePanel.HEIGHT / 4, (GamePanel.WIDTH / 4) + ((GamePanel.WIDTH / 16) * (2 ^ (1 / 2))), (GamePanel.HEIGHT - GamePanel.HEIGHT / 4) + ((GamePanel.WIDTH / 16) * (2 ^ (1 / 2))), paint);
-        //canvas.drawCircle(GamePanel.WIDTH / 4, GamePanel.HEIGHT - GamePanel.HEIGHT / 4, GamePanel.WIDTH / 16, paint);
-        //paint.setColor(Color.YELLOW);
-        canvas.drawRect(GamePanel.WIDTH / 4, GamePanel.HEIGHT-GamePanel.HEIGHT/16, (GamePanel.WIDTH / 4) + ((GamePanel.WIDTH / 16) * (2 ^ (1 / 2))), (GamePanel.HEIGHT-GamePanel.HEIGHT/16) + ((GamePanel.WIDTH / 16) * (2 ^ (1 / 2))), paint);
-        //canvas.drawCircle(GamePanel.WIDTH/4,GamePanel.HEIGHT-GamePanel.HEIGHT/16,GamePanel.WIDTH/16,paint);
-        //paint.setColor(Color.RED);
-        canvas.drawRect(GamePanel.WIDTH / 16, GamePanel.HEIGHT - (5 * GamePanel.HEIGHT) / 32, (GamePanel.WIDTH / 16) + ((GamePanel.WIDTH / 16) * (2 ^ (1 / 2))), (GamePanel.HEIGHT - (5 * GamePanel.HEIGHT) / 32) + ((GamePanel.WIDTH / 16) * (2 ^ (1 / 2))), paint);
-        //canvas.drawCircle(GamePanel.WIDTH/16,GamePanel.HEIGHT-(5*GamePanel.HEIGHT)/32,GamePanel.WIDTH/16,paint);
-        //paint.setColor(Color.BLUE);
-        canvas.drawRect((7 * GamePanel.WIDTH) / 16, GamePanel.HEIGHT - (5 * GamePanel.HEIGHT) / 32, (7 * GamePanel.WIDTH) / 16 + ((GamePanel.WIDTH / 16) * (2 ^ (1 / 2))), (GamePanel.HEIGHT - (5 * GamePanel.HEIGHT) / 32) + ((GamePanel.WIDTH / 16) * (2 ^ (1 / 2))), paint);
-        //canvas.drawCircle((7*GamePanel.WIDTH)/16,GamePanel.HEIGHT-(5*GamePanel.HEIGHT)/32,GamePanel.WIDTH/16,paint);
-        System.out.println("REACHED BG");
-
-        Bitmap imageicon= pause;
-        if(GamePanel.ispaused==true)
+        if(GamePanel.isGameOver)
         {
-            imageicon=play;
+            paint.setColor(Color.BLACK);
+            canvas.drawRect(new Rect(0, 0, GamePanel.WIDTH, GamePanel.HEIGHT), paint);
+            canvas.drawBitmap(gameover,0,0,paint);
+
+            paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+            paint.setColor(Color.RED);
+            paint.setTextSize(25f);
+            Typeface currentTypeFace =  paint.getTypeface();
+            Typeface bold = Typeface.create(currentTypeFace, Typeface.BOLD);
+            paint.setTypeface(bold);
+            canvas.drawText("YOUR SCORE IS "+GamePanel.score,GamePanel.WIDTH/2,GamePanel.HEIGHT/2,paint);
         }
-        canvas.drawBitmap(imageicon,GamePanel.WIDTH/4,GamePanel.HEIGHT/4,paint);
+        else
+        {
+            canvas.drawBitmap(image, 0, 0, null);
+            paint.setStyle(Paint.Style.FILL);
+            paint.setColor(Color.BLACK);
+            canvas.drawRect(GamePanel.WIDTH / 4, GamePanel.HEIGHT - GamePanel.HEIGHT / 4, (GamePanel.WIDTH / 4) + ((GamePanel.WIDTH / 16) * (2 ^ (1 / 2))), (GamePanel.HEIGHT - GamePanel.HEIGHT / 4) + ((GamePanel.WIDTH / 16) * (2 ^ (1 / 2))), paint);
+            //canvas.drawCircle(GamePanel.WIDTH / 4, GamePanel.HEIGHT - GamePanel.HEIGHT / 4, GamePanel.WIDTH / 16, paint);
+            //paint.setColor(Color.YELLOW);
+            canvas.drawRect(GamePanel.WIDTH / 4, GamePanel.HEIGHT - GamePanel.HEIGHT / 16, (GamePanel.WIDTH / 4) + ((GamePanel.WIDTH / 16) * (2 ^ (1 / 2))), (GamePanel.HEIGHT - GamePanel.HEIGHT / 16) + ((GamePanel.WIDTH / 16) * (2 ^ (1 / 2))), paint);
+            //canvas.drawCircle(GamePanel.WIDTH/4,GamePanel.HEIGHT-GamePanel.HEIGHT/16,GamePanel.WIDTH/16,paint);
+            //paint.setColor(Color.RED);
+            canvas.drawRect(GamePanel.WIDTH / 16, GamePanel.HEIGHT - (5 * GamePanel.HEIGHT) / 32, (GamePanel.WIDTH / 16) + ((GamePanel.WIDTH / 16) * (2 ^ (1 / 2))), (GamePanel.HEIGHT - (5 * GamePanel.HEIGHT) / 32) + ((GamePanel.WIDTH / 16) * (2 ^ (1 / 2))), paint);
+            //canvas.drawCircle(GamePanel.WIDTH/16,GamePanel.HEIGHT-(5*GamePanel.HEIGHT)/32,GamePanel.WIDTH/16,paint);
+            //paint.setColor(Color.BLUE);
+            canvas.drawRect((7 * GamePanel.WIDTH) / 16, GamePanel.HEIGHT - (5 * GamePanel.HEIGHT) / 32, (7 * GamePanel.WIDTH) / 16 + ((GamePanel.WIDTH / 16) * (2 ^ (1 / 2))), (GamePanel.HEIGHT - (5 * GamePanel.HEIGHT) / 32) + ((GamePanel.WIDTH / 16) * (2 ^ (1 / 2))), paint);
+            //canvas.drawCircle((7*GamePanel.WIDTH)/16,GamePanel.HEIGHT-(5*GamePanel.HEIGHT)/32,GamePanel.WIDTH/16,paint);
+            System.out.println("REACHED BG");
+
+            Bitmap imageicon = pause;
+            int halt_x=0;
+            int halt_y=0;
+            if (GamePanel.ispaused == true) {
+                imageicon = play;
+                halt_x=(GamePanel.WIDTH-(imageicon.getWidth()/2));
+                halt_y=(GamePanel.HEIGHT-(imageicon.getHeight()/2));
+            }
+            canvas.drawBitmap(imageicon, halt_x, halt_y, paint);
+        }
     }
 }
