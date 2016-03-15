@@ -112,6 +112,14 @@ public class Player extends GameObject{
 /* SAMPLE LOGIC WORKED END******************************************/
     public void update() {
         System.out.println("IN UPDATE PLAYER");
+        if(GamePanel.isRestarted==true)
+        {
+            this.x = GamePanel.WIDTH/2;
+            this.y = GamePanel.HEIGHT/2;
+            dy = 0;
+            dx = 0;
+            score = 0;
+        }
         long elapsed = (System.nanoTime() - startTime) / 1000000;
         if (elapsed > 100) {
             score++;

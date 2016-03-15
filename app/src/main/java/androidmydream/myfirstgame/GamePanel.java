@@ -77,15 +77,23 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
         Bitmap pause = BitmapFactory.decodeResource(getResources(),R.drawable.paused);
         Bitmap gameover = BitmapFactory.decodeResource(getResources(),R.drawable.gameover);
 
-        bg = new Background(BitmapFactory.decodeResource(getResources(), R.drawable.ground),play,pause,gameover);
-        Bitmap tank_top = BitmapFactory.decodeResource(getResources(),R.drawable.tank_top);
-        Bitmap tank_bottom = BitmapFactory.decodeResource(getResources(),R.drawable.tank_bottom);
-        Bitmap tank_right = BitmapFactory.decodeResource(getResources(),R.drawable.tank_right);
-        Bitmap tank_left = BitmapFactory.decodeResource(getResources(),R.drawable.tank_left);
+        Bitmap top_dir = BitmapFactory.decodeResource(getResources(),R.drawable.top);
+        Bitmap down_dir = BitmapFactory.decodeResource(getResources(),R.drawable.down);
+        Bitmap right_dir = BitmapFactory.decodeResource(getResources(),R.drawable.right);
+        Bitmap left_dir = BitmapFactory.decodeResource(getResources(),R.drawable.left);
+
+        bg = new Background(BitmapFactory.decodeResource(getResources(), R.drawable.space_bg),play,pause,top_dir,down_dir,right_dir,left_dir,gameover);
+        Bitmap tank_top = BitmapFactory.decodeResource(getResources(),R.drawable.top_robot);
+        Bitmap tank_bottom = BitmapFactory.decodeResource(getResources(),R.drawable.down_robot);
+        Bitmap tank_right = BitmapFactory.decodeResource(getResources(),R.drawable.right_robot);
+        Bitmap tank_left = BitmapFactory.decodeResource(getResources(),R.drawable.left_robot);
+
+        //DIRECTION BUTTONS LOADING
+
 
         //player = new Player(BitmapFactory.decodeResource(getResources(), R.drawable.tank), 65, 25, 1);
 
-        player = new Player(tank_top,tank_left,tank_bottom,tank_right, 75, 35, 1);
+        player = new Player(tank_top,tank_left,tank_bottom,tank_right, GamePanel.HEIGHT/10, GamePanel.WIDTH/8, 1);
         dp=new DirectionPanel();
 
         bullet_top = BitmapFactory.decodeResource(getResources(),R.drawable.fire_bullet);
@@ -111,10 +119,12 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
     {
         System.out.println("IN TOUCH EVENT");
 
-        if(isGameOver)
+        if(GamePanel.isGameOver)
         {
-            isRestarted=true;
+            GamePanel.isRestarted=true;
+            endinProcessCountTime = 0;
             thread.setRunning(true);
+            GamePanel.isGameOver=false;
         }
         float locX = event.getX();
         float locY = event.getY();
@@ -226,6 +236,10 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
 
                 enemygroup.EnemyDraw(canvas);
                 canvas.restoreToCount(savedState);
+            }
+            if(GamePanel.isRestarted==true)
+            {
+                GamePanel.isRestarted=false;
             }
         }
     }

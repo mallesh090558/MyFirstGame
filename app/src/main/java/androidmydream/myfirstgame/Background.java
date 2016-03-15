@@ -12,9 +12,10 @@ package androidmydream.myfirstgame;
 public class Background {
 
     private Bitmap image,pause,play,gameover;
+    private Bitmap top_dir,left_dir,down_dir,right_dir;
     private int x, y, dx;
 
-    public Background(Bitmap res, Bitmap play, Bitmap pause, Bitmap gameover)
+    public Background(Bitmap res, Bitmap play, Bitmap pause, Bitmap top_dir,Bitmap down_dir, Bitmap right_dir, Bitmap left_dir, Bitmap gameover)
     {
         image = getResizedBitmap(res,GamePanel.WIDTH,GamePanel.HEIGHT);
         dx=GamePanel.MOVESPEED;
@@ -22,7 +23,13 @@ public class Background {
         this.play=getResizedBitmap(play,250,250);
         this.pause=getResizedBitmap(pause,50,50);
         this.gameover=getResizedBitmap(gameover,GamePanel.WIDTH,gameover.getHeight());
+
+        this.top_dir=getResizedBitmap(top_dir,(GamePanel.HEIGHT - GamePanel.HEIGHT / 4) + ((GamePanel.WIDTH / 16) * (2 ^ (1 / 2))),(GamePanel.HEIGHT - GamePanel.HEIGHT / 4) + ((GamePanel.WIDTH / 16) * (2 ^ (1 / 2))));
+        this.down_dir=getResizedBitmap(down_dir,(GamePanel.HEIGHT - GamePanel.HEIGHT / 4) + ((GamePanel.WIDTH / 16) * (2 ^ (1 / 2))),(GamePanel.HEIGHT - GamePanel.HEIGHT / 4) + ((GamePanel.WIDTH / 16) * (2 ^ (1 / 2))));
+        this.right_dir=getResizedBitmap(right_dir,(GamePanel.HEIGHT - GamePanel.HEIGHT / 4) + ((GamePanel.WIDTH / 16) * (2 ^ (1 / 2))),(GamePanel.HEIGHT - GamePanel.HEIGHT / 4) + ((GamePanel.WIDTH / 16) * (2 ^ (1 / 2))));
+        this.left_dir=getResizedBitmap(left_dir,(GamePanel.HEIGHT - GamePanel.HEIGHT / 4) + ((GamePanel.WIDTH / 16) * (2 ^ (1 / 2))),(GamePanel.HEIGHT - GamePanel.HEIGHT / 4) + ((GamePanel.WIDTH / 16) * (2 ^ (1 / 2))));
     }
+
     public Bitmap getResizedBitmap(Bitmap bm, int newWidth, int newHeight) {
         int width = bm.getWidth();
         int height = bm.getHeight();
@@ -60,27 +67,27 @@ public class Background {
             Typeface currentTypeFace =  paint.getTypeface();
             Typeface bold = Typeface.create(currentTypeFace, Typeface.BOLD);
             paint.setTypeface(bold);
-            canvas.drawText("YOUR SCORE IS "+GamePanel.score,GamePanel.WIDTH/2,GamePanel.HEIGHT/2,paint);
-        }
-        else if(GamePanel.isRestarted)
-        {
-            GamePanel.isGameOver=false;
+            canvas.drawText("YOUR SCORE IS "+GamePanel.score,GamePanel.WIDTH/16,GamePanel.HEIGHT-GamePanel.HEIGHT/16,paint);
         }
         else
         {
             canvas.drawBitmap(image, 0, 0, null);
             paint.setStyle(Paint.Style.FILL);
-            paint.setColor(Color.BLACK);
+            paint.setColor(Color.WHITE);
             canvas.drawRect(GamePanel.WIDTH / 4, GamePanel.HEIGHT - GamePanel.HEIGHT / 4, (GamePanel.WIDTH / 4) + ((GamePanel.WIDTH / 16) * (2 ^ (1 / 2))), (GamePanel.HEIGHT - GamePanel.HEIGHT / 4) + ((GamePanel.WIDTH / 16) * (2 ^ (1 / 2))), paint);
+            //canvas.drawBitmap(top_dir,GamePanel.WIDTH / 4,GamePanel.HEIGHT - GamePanel.HEIGHT / 4,paint);
             //canvas.drawCircle(GamePanel.WIDTH / 4, GamePanel.HEIGHT - GamePanel.HEIGHT / 4, GamePanel.WIDTH / 16, paint);
             //paint.setColor(Color.YELLOW);
             canvas.drawRect(GamePanel.WIDTH / 4, GamePanel.HEIGHT - GamePanel.HEIGHT / 16, (GamePanel.WIDTH / 4) + ((GamePanel.WIDTH / 16) * (2 ^ (1 / 2))), (GamePanel.HEIGHT - GamePanel.HEIGHT / 16) + ((GamePanel.WIDTH / 16) * (2 ^ (1 / 2))), paint);
+            //canvas.drawBitmap(left_dir, GamePanel.WIDTH / 4, GamePanel.HEIGHT - GamePanel.HEIGHT / 16, paint);
             //canvas.drawCircle(GamePanel.WIDTH/4,GamePanel.HEIGHT-GamePanel.HEIGHT/16,GamePanel.WIDTH/16,paint);
             //paint.setColor(Color.RED);
             canvas.drawRect(GamePanel.WIDTH / 16, GamePanel.HEIGHT - (5 * GamePanel.HEIGHT) / 32, (GamePanel.WIDTH / 16) + ((GamePanel.WIDTH / 16) * (2 ^ (1 / 2))), (GamePanel.HEIGHT - (5 * GamePanel.HEIGHT) / 32) + ((GamePanel.WIDTH / 16) * (2 ^ (1 / 2))), paint);
+            //canvas.drawBitmap(down_dir, GamePanel.WIDTH / 16, GamePanel.HEIGHT - (5 * GamePanel.HEIGHT) / 32, paint);
             //canvas.drawCircle(GamePanel.WIDTH/16,GamePanel.HEIGHT-(5*GamePanel.HEIGHT)/32,GamePanel.WIDTH/16,paint);
             //paint.setColor(Color.BLUE);
             canvas.drawRect((7 * GamePanel.WIDTH) / 16, GamePanel.HEIGHT - (5 * GamePanel.HEIGHT) / 32, (7 * GamePanel.WIDTH) / 16 + ((GamePanel.WIDTH / 16) * (2 ^ (1 / 2))), (GamePanel.HEIGHT - (5 * GamePanel.HEIGHT) / 32) + ((GamePanel.WIDTH / 16) * (2 ^ (1 / 2))), paint);
+            //canvas.drawBitmap(right_dir,( 7 * GamePanel.WIDTH) / 16, GamePanel.HEIGHT - (5 * GamePanel.HEIGHT) / 32, paint);
             //canvas.drawCircle((7*GamePanel.WIDTH)/16,GamePanel.HEIGHT-(5*GamePanel.HEIGHT)/32,GamePanel.WIDTH/16,paint);
             System.out.println("REACHED BG");
 

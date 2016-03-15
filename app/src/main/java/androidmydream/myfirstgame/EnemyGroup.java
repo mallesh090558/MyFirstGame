@@ -140,6 +140,9 @@ public class EnemyGroup
         if(GamePanel.isRestarted)
         {
             obj.clear();
+            obj=null;
+            obj = new ArrayList<FireBall>();
+            addEnemy();
         }
         for (int i=0;i< obj.size();i++)
         {
