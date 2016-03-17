@@ -71,7 +71,7 @@ public class DirectionPanel
         }
         else if(start.contains(x,y))
         {
-            return 66;
+            return 55;
         }
         else
         return 0;

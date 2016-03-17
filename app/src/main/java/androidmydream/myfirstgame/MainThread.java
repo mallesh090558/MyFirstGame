@@ -45,10 +45,7 @@ public class MainThread extends Thread
                     }
                     else
                     {
-                        if(GamePanel.isGameOver)
-                        {
                             this.gamePanel.draw(canvas);
-                        }
                     }
                    }
             } catch (Exception e) {

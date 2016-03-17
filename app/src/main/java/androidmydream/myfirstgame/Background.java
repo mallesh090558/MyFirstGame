@@ -12,6 +12,7 @@ package androidmydream.myfirstgame;
 public class Background {
 
     private Bitmap image,pause,play,gameover;
+    private Bitmap imageicon;
     private Bitmap top_dir,left_dir,down_dir,right_dir;
     private int x, y, dx;
 
@@ -63,11 +64,22 @@ public class Background {
 
             paint = new Paint(Paint.ANTI_ALIAS_FLAG);
             paint.setColor(Color.RED);
-            paint.setTextSize(25f);
+            paint.setTextSize(15f);
             Typeface currentTypeFace =  paint.getTypeface();
             Typeface bold = Typeface.create(currentTypeFace, Typeface.BOLD);
             paint.setTypeface(bold);
-            canvas.drawText("YOUR SCORE IS "+GamePanel.score,GamePanel.WIDTH/16,GamePanel.HEIGHT-GamePanel.HEIGHT/16,paint);
+            canvas.drawText("YOUR SCORE IS "+GamePanel.score+" !  DOUBLE TAP TO RESTART THE GAME",GamePanel.WIDTH/16,GamePanel.HEIGHT-GamePanel.HEIGHT/16,paint);
+        }
+        else if(GamePanel.ispaused)
+        {
+            System.out.println("REACHED PAUSE IMAGE STATUS CONDITION");
+            imageicon = play;
+            int halt_x=(GamePanel.WIDTH/2-(imageicon.getWidth()/2));
+            int halt_y=(GamePanel.HEIGHT/2-(imageicon.getHeight()/2));
+
+            canvas.drawBitmap(imageicon, halt_x, halt_y, paint);
+            //canvas.drawBitmap(imageicon, 0, 0, paint);
+            System.out.println("COMPLETED PAUSE IMAGE STATUS CONDITION");
         }
         else
         {
@@ -91,15 +103,9 @@ public class Background {
             //canvas.drawCircle((7*GamePanel.WIDTH)/16,GamePanel.HEIGHT-(5*GamePanel.HEIGHT)/32,GamePanel.WIDTH/16,paint);
             System.out.println("REACHED BG");
 
-            Bitmap imageicon = pause;
-            int halt_x=0;
-            int halt_y=0;
-            if (GamePanel.ispaused == true) {
-                imageicon = play;
-                halt_x=(GamePanel.WIDTH-(imageicon.getWidth()/2));
-                halt_y=(GamePanel.HEIGHT-(imageicon.getHeight()/2));
-            }
-            canvas.drawBitmap(imageicon, halt_x, halt_y, paint);
+            imageicon = pause;
+
+            canvas.drawBitmap(imageicon, 0, 0, paint);
         }
     }
 }

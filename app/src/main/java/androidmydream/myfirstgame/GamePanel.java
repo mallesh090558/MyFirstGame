@@ -4,7 +4,9 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.support.v4.view.GestureDetectorCompat;
 import android.util.DisplayMetrics;
+import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -28,7 +30,12 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
     public static boolean isGameOver=false;
     public static boolean isRestarted=false;
     public static boolean ispaused=false;
+    public static boolean RestarttheGame=false;
     public static int score,level;
+
+    final GestureDetector mGesDetect;
+
+    private GestureDetectorCompat gdc;
 
     public GamePanel(Context context)
     {
@@ -36,6 +43,8 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
         GamePanel.score=0;
         DisplayMetrics dm = new DisplayMetrics();
         ((MainActivity)context).getWindowManager().getDefaultDisplay().getMetrics(dm);
+
+        mGesDetect = new GestureDetector(this.getContext(), new DoubleTapGestureDetector());
 
         WIDTH  = dm.widthPixels;
         HEIGHT = dm.heightPixels;
@@ -73,7 +82,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
     @Override
     public void surfaceCreated(SurfaceHolder holder){
 
-        Bitmap play = BitmapFactory.decodeResource(getResources(),R.drawable.play);
+        Bitmap play = BitmapFactory.decodeResource(getResources(),R.drawable.play_new);
         Bitmap pause = BitmapFactory.decodeResource(getResources(),R.drawable.paused);
         Bitmap gameover = BitmapFactory.decodeResource(getResources(),R.drawable.gameover);
 
@@ -114,17 +123,22 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
         thread.start();
 
     }
+    public void restartTheGame()
+    {
+        GamePanel.isRestarted=true;
+        endinProcessCountTime = 0;
+        thread.setRunning(true);
+        GamePanel.isGameOver=false;
+    }
     @Override
     public boolean onTouchEvent(MotionEvent event)
     {
         System.out.println("IN TOUCH EVENT");
-
-        if(GamePanel.isGameOver)
+        mGesDetect.onTouchEvent(event);
+        if(GamePanel.isGameOver && GamePanel.RestarttheGame)
         {
-            GamePanel.isRestarted=true;
-            endinProcessCountTime = 0;
-            thread.setRunning(true);
-            GamePanel.isGameOver=false;
+            GamePanel.RestarttheGame=false;
+            restartTheGame();
         }
         float locX = event.getX();
         float locY = event.getY();
@@ -214,7 +228,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
             canvas.scale(scaleFactorX, scaleFactorY);
             bg.draw(canvas);
             System.out.println("REACHED");
-            if(!isGameOver) {
+            if(!isGameOver && !GamePanel.ispaused) {
                 player.draw(canvas);
                 bullet_fired.draw(canvas);
 
@@ -240,9 +254,8 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
             if(GamePanel.isRestarted==true)
             {
                 GamePanel.isRestarted=false;
+                GamePanel.score=0;
             }
         }
     }
-
-
 }
