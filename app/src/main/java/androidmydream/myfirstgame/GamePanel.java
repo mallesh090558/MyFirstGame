@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.support.v4.view.GestureDetectorCompat;
 import android.util.DisplayMetrics;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
@@ -34,8 +33,6 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
     public static int score,level;
 
     final GestureDetector mGesDetect;
-
-    private GestureDetectorCompat gdc;
 
     public GamePanel(Context context)
     {
@@ -102,7 +99,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
 
         //player = new Player(BitmapFactory.decodeResource(getResources(), R.drawable.tank), 65, 25, 1);
 
-        player = new Player(tank_top,tank_left,tank_bottom,tank_right, GamePanel.HEIGHT/10, GamePanel.WIDTH/8, 1);
+        player = new Player(tank_top,tank_left,tank_bottom,tank_right, GamePanel.HEIGHT/8, GamePanel.WIDTH/6, 1);
         dp=new DirectionPanel();
 
         bullet_top = BitmapFactory.decodeResource(getResources(),R.drawable.fire_bullet);
@@ -255,6 +252,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
             {
                 GamePanel.isRestarted=false;
                 GamePanel.score=0;
+                GamePanel.level=0;
             }
         }
     }

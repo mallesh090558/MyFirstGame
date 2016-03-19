@@ -1,11 +1,9 @@
 package androidmydream.myfirstgame;
 
-        import android.graphics.Bitmap;
-        import android.graphics.Canvas;
-        import android.graphics.Matrix;
-        import android.graphics.Rect;
-
-        import java.util.Random;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Matrix;
+import android.graphics.Rect;
 
 public class Player extends GameObject{
     private Bitmap top,left,bottom,right;
@@ -119,6 +117,7 @@ public class Player extends GameObject{
             dy = 0;
             dx = 0;
             score = 0;
+
         }
         long elapsed = (System.nanoTime() - startTime) / 1000000;
         if (elapsed > 100) {
